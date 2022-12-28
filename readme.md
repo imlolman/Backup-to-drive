@@ -12,6 +12,9 @@ Helps to backup given folders and databases on a linux server to Google Drive Us
 - Update the config.ini file with your details
 - Test the script by running `python3 backup.py`
 - Schedule the script to run using Linux Cron
+    - `crontab -e`
+    - `30 2 * * * /usr/bin/python3 /root/backup/backup.py > /root/backup/backup.log`
+    - This will run the script at 2:30 AM everyday and log the output to backup.log file
 
 ## License
 Apache License 2.0
