@@ -12,3 +12,9 @@ Helps to backup given folders and databases on a linux server to Google Drive Us
 - Update the config.ini file with your details
 - Test the script by running `python3 backup.py`
 - Schedule the script to run using Linux Cron
+
+## License
+Apache License 2.0
+
+## Author Information
+- [Satyam Gupta](https://imlolman.github.io/)
