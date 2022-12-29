@@ -82,7 +82,7 @@ def backupDatabase(backup_databases):
     filename = f'{temp_dir}/databases.tar.gz'
 
     # Tar the databases
-    os.system(f'tar -czf {filename} {temp_dir}/databases > /dev/null')
+    os.system(f'tar -czf {filename} {temp_dir}/databases > /dev/null 2>&1')
 
     # Delete temp folder
     os.system(f'rm -rf {temp_dir}/databases > /dev/null')
