@@ -2,6 +2,7 @@ import re
 import utils
 from config import backup_folders, backup_databases, retention_days
 
+
 def createBackup():
     """
     Create the backup of Given Folders and Databases and upload it to Google Drive
@@ -37,6 +38,7 @@ def createBackup():
     print(":: Uploading the final zip file to Google Drive...")
     utils.uploadFileToGoogleDrive(finalZipFile)
 
+
 def deleteOldBackups():
     """
     Delete the old backups from the Google Drive Backup folder
@@ -57,11 +59,7 @@ def deleteOldBackups():
     print(":: Deleting the files using rclone...")
     utils.deleteFiles(files)
 
+
 if __name__ == "__main__":
     finalZipFile = createBackup()
     deleteOldBackups()
-
-
-
-
-

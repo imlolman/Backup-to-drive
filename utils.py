@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timedelta
 from config import remote, temp_dir, mysql_user, mysql_password, drive_base_folder
 
+
 def cleanTempFolder():
     """
     Clean the temp folder
@@ -11,6 +12,7 @@ def cleanTempFolder():
     # Delete temp folder if it exists
     if os.path.exists(f'{temp_dir}'):
         os.system(f'rm -rf {temp_dir} > /dev/null')
+
 
 def zipFolders(backup_folders):
     """
@@ -26,7 +28,7 @@ def zipFolders(backup_folders):
     # Delete temp folder if it exists
     if os.path.exists(f'{temp_dir}/folders'):
         os.system(f'rm -rf {temp_dir}/folders > /dev/null')
-    
+
     # Create temp folder
     os.system(f'mkdir -p {temp_dir}/folders > /dev/null')
 
@@ -37,10 +39,12 @@ def zipFolders(backup_folders):
         folder_name = folder_path.split("/")[-1]
 
         # Create the tar.gz file
-        os.system(f'tar -czf {temp_dir}/folders/{folder_name}.tar.gz {folder_path} > /dev/null 2>&1')
+        os.system(
+            f'tar -czf {temp_dir}/folders/{folder_name}.tar.gz {folder_path} > /dev/null 2>&1')
 
     # Zip the folders
-    os.system(f'zip -rj {temp_dir}/folders.zip {temp_dir}/folders/* > /dev/null')
+    os.system(
+        f'zip -rj {temp_dir}/folders.zip {temp_dir}/folders/* > /dev/null')
 
     # Delete temp folder
     os.system(f'rm -rf {temp_dir}/folders > /dev/null')
@@ -49,6 +53,7 @@ def zipFolders(backup_folders):
     filename = f'{temp_dir}/folders.zip'
 
     return filename
+
 
 def backupDatabase(backup_databases):
     """
@@ -64,24 +69,26 @@ def backupDatabase(backup_databases):
     # Delete temp folder if it exists
     if os.path.exists(f'{temp_dir}/databases'):
         os.system(f'rm -rf {temp_dir}/databases > /dev/null')
-    
+
     # Create temp folder
     os.system(f'mkdir -p {temp_dir}/databases > /dev/null')
 
     # Create sql files for each database
     for database in backup_databases:
-        os.system(f'mysqldump -u {mysql_user} -p{mysql_password} {database} > {temp_dir}/databases/{database}.sql > /dev/null')
+        os.system(
+            f'mysqldump -u {mysql_user} -p{mysql_password} {database} > {temp_dir}/databases/{database}.sql')
 
-    # Zip the databases
-    os.system(f'zip -rj {temp_dir}/databases.zip {temp_dir}/databases/* > /dev/null')
+    # Set the filename
+    filename = f'{temp_dir}/databases.tar.gz'
+
+    # Tar the databases
+    os.system(f'tar -czf {filename} {temp_dir}/databases > /dev/null')
 
     # Delete temp folder
     os.system(f'rm -rf {temp_dir}/databases > /dev/null')
 
-    # Get the filename
-    filename = f'{temp_dir}/databases.zip'
-
     return filename
+
 
 def createFinalZipFile(zip_files):
     """
@@ -96,7 +103,7 @@ def createFinalZipFile(zip_files):
     # Delete temp folder if it exists
     if os.path.exists(f'{temp_dir}/final'):
         os.system(f'rm -rf {temp_dir}/final > /dev/null')
-    
+
     # Create temp folder
     os.system(f'mkdir -p {temp_dir}/final > /dev/null')
 
@@ -105,7 +112,8 @@ def createFinalZipFile(zip_files):
         os.system(f'mv {zip_file} {temp_dir}/final > /dev/null')
 
     # Create the final zip file
-    os.system(f'zip -rj {temp_dir}/{finalFilename}.zip {temp_dir}/final/* > /dev/null')
+    os.system(
+        f'zip -rj {temp_dir}/{finalFilename}.zip {temp_dir}/final/* > /dev/null')
 
     # Delete temp folder
     os.system(f'rm -rf {temp_dir}/final > /dev/null')
@@ -114,6 +122,7 @@ def createFinalZipFile(zip_files):
     filename = f'{temp_dir}/{finalFilename}.zip'
 
     return filename
+
 
 def getAllFilesFromGoogleDrive():
     """
@@ -178,7 +187,7 @@ def extractDateTimeAndFileName(line):
     date_time_pattern = r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})'
     date_time_match = re.search(date_time_pattern, line)
     date_time = date_time_match.group(1)
-    
+
     # Convert date_time to datetime
     date_time = datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
 
@@ -226,7 +235,8 @@ def deleteFiles(files):
 
     # Delete the files from the Google Drive (without trash)
     for date_time, string in files:
-        os.system(f'rclone purge --drive-use-trash=false "{remote}:{drive_base_folder}/{string}" > /dev/null')
+        os.system(
+            f'rclone purge --drive-use-trash=false "{remote}:{drive_base_folder}/{string}" > /dev/null')
 
 
 def uploadFileToGoogleDrive(filename):
@@ -240,4 +250,5 @@ def uploadFileToGoogleDrive(filename):
     finalFilename = f'backup{datetime.now().strftime("%Y%m%d%H%M%S")}'
 
     # Upload the file to the Google Drive
-    os.system(f'rclone copy "{filename}" "{remote}:{drive_base_folder}/{finalFilename}" > /dev/null')
+    os.system(
+        f'rclone copy "{filename}" "{remote}:{drive_base_folder}/{finalFilename}" > /dev/null')

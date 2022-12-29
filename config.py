@@ -1,5 +1,6 @@
 
 import configparser
+import pathlib
 import ast
 
 
@@ -22,7 +23,11 @@ def read_config(config_file):
     return config
 
 
-config = read_config('config.ini')
+# Get the path to the current file
+path = pathlib.Path(__file__).parent.resolve()
+
+# Read the configuration from the config.ini file
+config = read_config(path / "config.ini")
 
 remote = config.get('Backup', 'RcloneRemoteName')
 backup_folders = ast.literal_eval(config.get('Backup', 'BackupFolders'))
