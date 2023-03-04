@@ -3,7 +3,7 @@ Helps to backup given folders and databases on a linux server to Google Drive Us
 
 ## Requirements
 - Linux Server
-- Rclone
+- Rclone (sudo -v ; curl https://rclone.org/install.sh | sudo bash)
 - Python 3.7+
 
 ## Installation
