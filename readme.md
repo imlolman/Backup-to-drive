@@ -9,8 +9,8 @@ Helps to backup given folders and databases on a linux server to Google Drive Us
 
 ## Installation
 - Install and configure Rclone (Setup Guide Here => https://rclone.org/drive/)
+- Install zip command `sudo apt install rclone zip -y`
 - Install Python 3.7+
-- Install zip command
 - Update the config.ini file with your details
 - Test the script by running `python3 backup.py`
 - Schedule the script to run using Linux Cron
